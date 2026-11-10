@@ -31,6 +31,18 @@ export default function Sobre() {
           </div>
         </Card>
       </div>
+      <Card titulo="Como funciona a operação ao vivo">
+        <div className="prosa">
+          <p>A tela <b>Ao vivo</b> simula, minuto a minuto, um dia útil da central do N1 (telefone e chat), com 8 analistas em turnos de 9 horas, almoço, pausas curtas e um treinamento.</p>
+          <ul>
+            <li><b>Chegadas:</b> seguem a curva de horário real de uma central, com picos às 9h e às 14h, e uma instabilidade no ERP às 11h15 que multiplica as ligações.</li>
+            <li><b>Fila:</b> telefone tem prioridade sobre chat. Quem espera além da própria paciência desiste (abandono).</li>
+            <li><b>Pausas:</b> só começam quando o analista termina o atendimento em curso. Algumas passam do previsto, como na vida real.</li>
+            <li><b>Dimensionamento:</b> a fórmula de Erlang C calcula quantos analistas seriam necessários em cada meia hora para atender 80% das ligações em até 60 s, e compara com a escala.</li>
+          </ul>
+          <p>Metas: nível de serviço ≥ 80% (telefone em até 60 s, chat em até 2 min) e abandono ≤ 5%. A simulação tem testes automáticos que conferem, por exemplo, que nenhum analista atende dois contatos ao mesmo tempo nem fora do turno.</p>
+        </div>
+      </Card>
       <Card titulo="Como cada indicador é calculado">
         <div className="defs">
           <div className="def"><b>SLA de resposta</b><code>1º contato no prazo ÷ chamados</code><span>Mede se o usuário foi atendido rápido.</span></div>
@@ -40,6 +52,8 @@ export default function Sobre() {
           <div className="def"><b>Reabertura</b><code>reabertos pelo usuário ÷ resolvidos</code><span>Chamados encerrados sem resolver de fato.</span></div>
           <div className="def"><b>CSAT</b><code>média das notas de 1 a 5</code><span>Pesquisa enviada após o atendimento.</span></div>
           <div className="def"><b>Prazo consumido</b><code>tempo aberto ÷ prazo de resolução</code><span>Acima de 100%, o chamado está vencido.</span></div>
+          <div className="def"><b>Nível de serviço</b><code>atendidos dentro da meta de espera ÷ (atendidos + abandonados)</code><span>Telefone: 60 s. Chat: 2 min.</span></div>
+          <div className="def"><b>TME e TMA</b><code>espera média · atendimento médio</code><span>Tempo até ser atendido e duração do atendimento.</span></div>
           <div className="def"><b>Transferências</b><code>mudanças de equipe ou analista ÷ chamados</code><span>Muitas transferências indicam triagem difícil.</span></div>
         </div>
       </Card>

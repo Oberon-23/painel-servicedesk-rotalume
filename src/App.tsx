@@ -1,10 +1,11 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { BookOpen, Headset, House, ListTodo, Sparkles, Star, Users } from 'lucide-react';
+import { BookOpen, Headset, House, ListTodo, Radio, Sparkles, Star, Users } from 'lucide-react';
 import { FiltrosProvider, useFiltros, type DefFiltro } from './kit/filtros';
 import { Moldura, type Visao } from './kit/ui';
 import { GROUPS, type Filtro } from './dados';
 import Resumo from './telas/Resumo';
 import Fila from './telas/Fila';
+import AoVivo from './telas/AoVivo';
 import Equipe from './telas/Equipe';
 import Satisfacao from './telas/Satisfacao';
 import Assistente from './telas/Assistente';
@@ -17,6 +18,7 @@ const FILTROS: DefFiltro[] = [
 
 const VISOES: Visao[] = [
   { path: '/', label: 'Visão geral', icon: <House />, heading: 'Visão geral do atendimento', sub: 'Prazo, satisfação e volume de chamados' },
+  { path: '/ao-vivo', label: 'Ao vivo', icon: <Radio />, heading: 'Operação ao vivo', sub: 'Fila, analistas e nível de serviço minuto a minuto', filtros: 'nenhum' },
   { path: '/fila', label: 'Fila e prazos', icon: <ListTodo />, heading: 'Fila e prazos', sub: 'Chamados abertos, vencidos e horários de pico' },
   { path: '/equipe', label: 'Equipe', icon: <Users />, heading: 'Desempenho da equipe', sub: 'Resolução, reabertura e satisfação por analista' },
   { path: '/satisfacao', label: 'Satisfação', icon: <Star />, heading: 'Satisfação do usuário', sub: 'O que os usuários acharam do atendimento' },
@@ -36,6 +38,7 @@ export default function App() {
         <Route element={<Moldura produto="Service Desk" icone={<Headset size={18} />} visoes={VISOES} asOf="31/10/2026"
           rodape={<>Projeto de portfólio de <a href="https://github.com/Oberon-23">Breno Silva</a> · Rotalume é uma empresa fictícia e todos os dados são simulados.</>} />}>
           <Route index element={<Resumo />} />
+          <Route path="ao-vivo" element={<AoVivo />} />
           <Route path="fila" element={<Fila />} />
           <Route path="equipe" element={<Equipe />} />
           <Route path="satisfacao" element={<Satisfacao />} />

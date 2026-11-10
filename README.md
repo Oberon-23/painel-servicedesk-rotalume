@@ -7,15 +7,33 @@
 ## O que o painel responde
 
 - Os chamados estão sendo atendidos e resolvidos no prazo?
-- O que está na fila agora, há quanto tempo, e o que vence primeiro?
+- Quantas pessoas estão esperando agora no telefone e no chat, de qual unidade, e há quanto tempo?
+- Quem da equipe está disponível, em atendimento ou em pausa, e alguma pausa passou do previsto?
+- A escala acompanha a demanda ao longo do dia?
+- O que está na fila de chamados, há quanto tempo, e o que vence primeiro?
 - Em que horários os chamados chegam, para montar a escala da equipe?
 - Como cada analista está em rapidez, reabertura e satisfação?
 - Do que os usuários mais reclamam, e qual ação atacar primeiro?
+
+![Operação ao vivo](docs/img/servicedesk_aovivo.png)
+
+## Operação ao vivo
+
+A tela **Ao vivo** simula um dia útil da central do N1, minuto a minuto, com uma linha do tempo e um botão para reproduzir o dia:
+
+- **Fila agora** por canal e por unidade de origem, com a maior espera e os próximos a serem atendidos.
+- **Estado de cada analista** (disponível, em atendimento, pausa curta, almoço, treinamento) e alerta quando a pausa passa do previsto.
+- **Nível de serviço, abandono, TME e TMA** do dia até o horário escolhido.
+- **Dimensionamento com Erlang C:** analistas necessários por meia hora para atender 80% em até 60 s, comparados com a escala.
+- Uma instabilidade no ERP às 11h15 mostra a fila crescendo e de onde vêm as ligações.
+
+A simulação tem testes automáticos (`npm test`) para o Erlang C e para regras como "nenhum analista atende dois contatos ao mesmo tempo".
 
 ![Fila e prazos](docs/img/servicedesk_fila.png)
 
 ## Por que essas escolhas
 
+- **Gestão de central em tempo real**: nível de serviço 80/60, abandono, TME, TMA e aderência da escala, os mesmos indicadores que um supervisor acompanha no painel da central telefônica.
 - **Métricas de ITSM (ITIL 4)**: SLA de resposta e de resolução por prioridade, FCR (resolução no primeiro contato), reabertura e CSAT. É o vocabulário de qualquer central de serviço.
 - **Mediana em vez de média no tempo de resolução**: poucos chamados parados por semanas distorcem a média; a mediana mostra o tempo típico.
 - **Fila com "prazo consumido"**: em vez de só contar abertos, cada chamado mostra quanto do prazo já gastou, para agir antes de vencer.
