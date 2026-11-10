@@ -179,7 +179,7 @@ export function intervalos(sim: Simulacao) {
     const resolvidos = ds.filter((d) => d.atendido != null || d.abandono != null).length;
     const noPrazo = cs.filter((c, k) => ds[k].atendido != null && ds[k].atendido! - c.chegada <= META_ESPERA[c.canal]).length;
     const meio = de + 15;
-    const escalados = sim.equipe.filter((a) => meio >= a.entrada && meio < a.saida && !a.pausas.some((p) => p.dur >= 60 && meio >= p.prevista && meio < p.prevista + p.dur)).length;
+    const escalados = sim.equipe.filter((a) => meio >= a.entrada && meio < a.saida && !a.pausas.some((p) => (p.tipo === 'Almoço' || p.tipo === 'Treinamento') && meio >= p.prevista && meio < p.prevista + p.dur)).length;
     return {
       de, rotulo: hhmm(de), Telefone: cs.filter((c) => c.canal === 'Telefone').length, Chat: cs.filter((c) => c.canal === 'Chat').length,
       necessarios: necessarios(cs.length, aht), escalados,

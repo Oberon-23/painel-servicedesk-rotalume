@@ -207,7 +207,7 @@ export default function AoVivo() {
       </div>
 
       <div className="grade g2">
-        <Card titulo="A escala acompanha a demanda?" sub="Por meia hora: analistas necessários para atender 80% em até 60 s (Erlang C), comparados aos escalados (sem contar o almoço).">
+        <Card titulo="A escala acompanha a demanda?" sub="Por meia hora: analistas necessários para atender 80% em até 60 s (Erlang C), comparados aos escalados (sem contar almoço e treinamento).">
           <Legenda itens={[{ label: 'Chegadas', cor: cor['seq-3'] }, { label: 'Necessários', cor: cor.bad, tipo: 'linha' }, { label: 'Escalados', cor: cor.c1, tipo: 'linha' }]} />
           <Grafico rotulo="Chegadas, analistas necessários e escalados por meia hora" altura={260}>
             <ComposedChart data={intervalos} margin={{ ...margem, right: 4 }}>

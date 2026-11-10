@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, ReferenceLine, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Line, LineChart, ReferenceLine, Tooltip, XAxis, YAxis } from 'recharts';
 import { Search } from 'lucide-react';
 import { useFiltro } from '../App';
 import { allSel, byMonth, CATS, filt, kpi, META, THEME_RULES } from '../dados';
 import { fDT, fN, fP, fPP, nf, statusOf } from '../kit/formato';
 import { MONTHS, periodLabel, prevRange } from '../kit/meses';
 import { Card, Delta, Kpis, Legenda, Manchete, Pill, Segmentado } from '../kit/ui';
-import { eixoX, eixoY, faixasForaDoPeriodo, grade, Grafico, margem, tt, useCores } from '../kit/graficos';
+import { eixoX, eixoY, faixasForaDoPeriodo, grade, Grafico, margem, passos, tt, useCores } from '../kit/graficos';
 
 type Nota = 'all' | 'neg' | 'mid' | 'pos';
 
@@ -25,6 +25,9 @@ export default function Satisfacao() {
 
   const serie = MONTHS.map((mm, i) => ({ mes: mm.label, i, CSAT: Number.isFinite(mAll[i].csat) ? +mAll[i].csat.toFixed(2) : null }));
   const cs = cats.map((x) => ({ assunto: x.c, csat: +x.v.toFixed(2) }));
+  const xLo = Math.min(3.5, Math.floor(Math.min(...cs.map((x) => x.csat), 5) * 2) / 2 - 0.5);
+  const ys = serie.map((x) => x.CSAT).filter((v): v is number => v != null);
+  const yLo = Math.min(4, Math.floor(Math.min(...ys, 5) * 5) / 5 - 0.2), yHi = Math.max(4.6, Math.ceil(Math.max(...ys, 0) * 5) / 5 + 0.2);
 
   const comRows = rows.filter((t) => t.comment);
   const temas = THEME_RULES.map(([nome, re, acao]) => {
@@ -57,31 +60,33 @@ export default function Satisfacao() {
       ]} />
 
       <div className="grade g2">
-        <Card titulo="Como a satisfação evoluiu?" sub="Nota média por mês. A queda de março coincide com a migração de e-mail.">
+        <Card titulo="Como a satisfação evoluiu?" sub="Nota média por mês. Em março de 2026 houve a migração de e-mail.">
           <Legenda itens={[{ label: 'Nota média', cor: cor.accent, tipo: 'linha' }, { label: 'Meta 4,3', tipo: 'tracejado' }]} />
           <Grafico rotulo="Nota média de satisfação por mês" altura={260}>
-            <AreaChart data={serie} margin={margem}>
+            <LineChart data={serie} margin={margem}>
               <CartesianGrid {...grade} />
               {faixasForaDoPeriodo(from, to)}
               <XAxis dataKey="mes" {...eixoX} />
-              <YAxis {...eixoY} domain={[3.6, 4.8]} ticks={[3.6, 3.8, 4, 4.2, 4.4, 4.6, 4.8]} tickFormatter={(v) => nf(1).format(v)} />
+              <YAxis {...eixoY} domain={[yLo, yHi]} ticks={passos(yLo, yHi, 0.2)} tickFormatter={(v) => nf(1).format(v)} />
               <ReferenceLine y={4.3} stroke={cor['ink-2']} strokeDasharray="5 4" />
               <Tooltip content={tt((v) => `${nf(2).format(v)} de 5`)} />
-              <Area dataKey="CSAT" name="Nota média" stroke={cor.accent} strokeWidth={2.6} fill={cor.accent} fillOpacity={0.12} dot={{ r: 3.5, fill: cor.accent }} isAnimationActive={false} />
-            </AreaChart>
+              <Line dataKey="CSAT" name="Nota média" stroke={cor.accent} strokeWidth={2.6} dot={{ r: 3.5, fill: cor.accent }} isAnimationActive={false} />
+            </LineChart>
           </Grafico>
         </Card>
-        <Card titulo="Satisfação por assunto" sub="Em vermelho, os assuntos abaixo da meta de 4,3.">
+        <Card titulo="Satisfação por assunto" sub="Cada ponto é a nota média do assunto. Em vermelho, abaixo da meta de 4,3.">
           <Grafico semDados={!cs.length} vazio="Poucas respostas de pesquisa neste recorte." rotulo="Nota média por assunto" altura={Math.max(260, cs.length * 32 + 30)}>
             <BarChart data={cs} layout="vertical" margin={{ top: 4, right: 24, bottom: 0, left: 8 }}>
-              <CartesianGrid horizontal={false} />
-              <XAxis type="number" domain={[3, 5]} ticks={[3, 3.5, 4, 4.5, 5]} tickFormatter={(v) => nf(1).format(v)} tickLine={false} axisLine={false} />
+              <CartesianGrid horizontal vertical={false} />
+              <XAxis type="number" domain={[xLo, 5]} ticks={passos(xLo, 5, 0.5)} tickFormatter={(v) => nf(1).format(v)} tickLine={false} axisLine={false} />
               <YAxis type="category" dataKey="assunto" {...eixoY} width={176} interval={0} />
               <ReferenceLine x={4.3} stroke={cor['ink-2']} strokeDasharray="5 4" label={{ value: 'Meta', position: 'top' }} />
               <Tooltip cursor={{ fill: cor['accent-soft'], opacity: 0.4 }} content={tt((v) => `${nf(2).format(v)} de 5`)} />
-              <Bar dataKey="csat" name="Nota média" radius={[0, 5, 5, 0]} maxBarSize={22} isAnimationActive={false}>
-                {cs.map((x) => <Cell key={x.assunto} fill={x.csat < META.csat ? cor.bad : cor.accent} />)}
-              </Bar>
+              {/* gráfico de pontos: a posição carrega o valor, então o eixo não precisa começar em zero */}
+              <Bar dataKey="csat" name="Nota média" isAnimationActive={false} shape={(p: { x?: number; y?: number; width?: number; height?: number; payload?: { csat: number } }) => {
+                const cx = Number(p.x) + Number(p.width), cy = Number(p.y) + Number(p.height) / 2, ruim = (p.payload?.csat ?? 5) < META.csat;
+                return <g><circle cx={cx} cy={cy} r={7} fill={ruim ? cor.bad : cor.accent} stroke={cor.surface} strokeWidth={2} /><text x={cx + 12} y={cy + 4} fontSize={12} fontWeight={600} fill={cor['ink-2']}>{nf(2).format(p.payload?.csat ?? 0)}</text></g>;
+              }} />
             </BarChart>
           </Grafico>
         </Card>
@@ -105,7 +110,7 @@ export default function Satisfacao() {
           <Search size={16} aria-hidden />
           <input type="search" placeholder="Buscar nos comentários, assuntos e subcategorias" value={busca} onChange={(e) => setBusca(e.target.value)} aria-label="Buscar nos comentários" />
         </label>
-        <div className="comentarios">
+        <div className="comentarios" tabIndex={0} role="region" aria-label="Lista de comentários">
           {lista.slice(0, 60).map((t) => (
             <div key={t.id} className="cmt">
               <div className="meta">
