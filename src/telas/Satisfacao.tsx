@@ -72,7 +72,7 @@ export default function Satisfacao() {
           </Grafico>
         </Card>
         <Card titulo="Satisfação por assunto" sub="Em vermelho, os assuntos abaixo da meta de 4,3.">
-          <Grafico rotulo="Nota média por assunto" altura={Math.max(260, cs.length * 32 + 30)}>
+          <Grafico semDados={!cs.length} vazio="Poucas respostas de pesquisa neste recorte." rotulo="Nota média por assunto" altura={Math.max(260, cs.length * 32 + 30)}>
             <BarChart data={cs} layout="vertical" margin={{ top: 4, right: 24, bottom: 0, left: 8 }}>
               <CartesianGrid horizontal={false} />
               <XAxis type="number" domain={[3, 5]} ticks={[3, 3.5, 4, 4.5, 5]} tickFormatter={(v) => nf(1).format(v)} tickLine={false} axisLine={false} />

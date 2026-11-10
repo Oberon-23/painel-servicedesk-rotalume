@@ -1,5 +1,7 @@
 # Painel de Service Desk — Grupo Rotalume
 
+[![CI](https://github.com/Oberon-23/painel-servicedesk-rotalume/actions/workflows/ci.yml/badge.svg)](https://github.com/Oberon-23/painel-servicedesk-rotalume/actions/workflows/ci.yml)
+
 > Dashboard interativo do Service Desk interno de TI de uma empresa **fictícia** (Grupo Rotalume), em React + TypeScript, sem backend. Acompanha prazos (SLA), fila, desempenho da equipe e satisfação dos usuários, e traz um assistente que responde perguntas comuns com os próprios dados do painel.
 
 ![Visão geral](docs/img/servicedesk_visao_geral.png)
@@ -57,6 +59,7 @@ Aplicação estática feita com Vite. Na Vercel, basta importar o repositório: 
 npm install
 npm run dev       # desenvolvimento
 npm run build     # gera dist/
+npm test          # testes dos cálculos
 ```
 
 A versão anterior, em HTML puro com Chart.js e assistente ligado ao Claude, está preservada em `legado.html`.

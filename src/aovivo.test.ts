@@ -36,3 +36,17 @@ describe('simulação do dia', () => {
     }
   });
 });
+
+describe('simulador de escala', () => {
+  test('a sugestão mantém o tamanho da equipe e não piora o dia', async () => {
+    const { ENTRADAS, resumoDia, sugerirEscala } = await import('./aovivo');
+    const s = sugerirEscala();
+    expect(s).toHaveLength(ENTRADAS.length);
+    const a = resumoDia(ENTRADAS), b = resumoDia(s);
+    expect(b.ns - b.abandono).toBeGreaterThanOrEqual(a.ns - a.abandono);
+  });
+  test('a escala real reproduz o dia mostrado na tela', async () => {
+    const { ENTRADAS, resumoDia, acumulado, FIM } = await import('./aovivo');
+    expect(resumoDia(ENTRADAS).ns).toBeCloseTo(acumulado(FIM).ns, 10);
+  });
+});

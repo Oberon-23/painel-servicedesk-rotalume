@@ -7,6 +7,7 @@ import {
 } from '../aovivo';
 import { fN, fP, nf, statusOf, type Status } from '../kit/formato';
 import { Card, Kpis, Legenda, Manchete, Pill, Segmentado, type Achado } from '../kit/ui';
+import SimuladorEscala from './SimuladorEscala';
 import { eixoX, eixoY, grade, Grafico, margem, tt, useCores } from '../kit/graficos';
 
 const MARCOS: [number, string][] = [[9 * 60 + 30, 'Pico da manhã'], [11 * 60 + 33, 'Instabilidade no ERP'], [12 * 60 + 40, 'Almoço'], [15 * 60 + 50, 'Fim de tarde']];
@@ -107,6 +108,7 @@ export default function AoVivo() {
         <div className="marcos">
           <Clock size={14} aria-hidden /> Ir para:
           {MARCOS.map(([v, l]) => <button key={v} type="button" className="sug" onClick={() => { setRodando(false); setM(v); }}>{hhmm(v)} · {l}</button>)}
+          <a className="sug destaque" href="#simulador" onClick={(e) => { e.preventDefault(); document.getElementById('simulador')?.scrollIntoView({ behavior: 'smooth' }); }}>Testar outra escala ↓</a>
         </div>
       </Card>
 
@@ -220,7 +222,7 @@ export default function AoVivo() {
               <ReferenceLine yAxisId="c" x={m} stroke={cor.ink} strokeDasharray="4 3" />
             </ComposedChart>
           </Grafico>
-          {pior ? <p className="nota-grafico">Maior falta às <b>{pior.rotulo}</b>: {pior.Necessários} analistas necessários e {pior.Escalados} escalados. Antecipar a entrada de quem começa às 10h cobriria o pico da manhã.</p> : null}
+          {pior ? <p className="nota-grafico">Maior falta às <b>{pior.rotulo}</b>: {pior.Necessários} analistas necessários e {pior.Escalados} escalados. Teste outra distribuição no simulador no fim da página.</p> : null}
         </Card>
         <Card titulo="Nível de serviço por meia hora" sub="Contatos atendidos dentro da meta de espera. Abaixo de 80%, a barra fica vermelha.">
           <Legenda itens={[{ label: 'Na meta', cor: cor.good }, { label: 'Abaixo da meta', cor: cor.bad }, { label: 'Meta 80%', tipo: 'tracejado' }]} />
@@ -239,6 +241,8 @@ export default function AoVivo() {
           </Grafico>
         </Card>
       </div>
+
+      <div id="simulador"><SimuladorEscala /></div>
 
       <Card titulo="Telefone e chat no dia até agora" sub={`Do início do turno até ${hhmm(m)}.`}>
         <div className="tabela-wrap">

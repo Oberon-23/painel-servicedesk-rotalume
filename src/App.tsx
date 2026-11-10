@@ -1,15 +1,16 @@
+import { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { BookOpen, Headset, House, ListTodo, Radio, Sparkles, Star, Users } from 'lucide-react';
 import { FiltrosProvider, useFiltros, type DefFiltro } from './kit/filtros';
 import { Moldura, type Visao } from './kit/ui';
 import { GROUPS, type Filtro } from './dados';
-import Resumo from './telas/Resumo';
-import Fila from './telas/Fila';
-import AoVivo from './telas/AoVivo';
-import Equipe from './telas/Equipe';
-import Satisfacao from './telas/Satisfacao';
-import Assistente from './telas/Assistente';
-import Sobre from './telas/Sobre';
+const Resumo = lazy(() => import('./telas/Resumo'));
+const Fila = lazy(() => import('./telas/Fila'));
+const AoVivo = lazy(() => import('./telas/AoVivo'));
+const Equipe = lazy(() => import('./telas/Equipe'));
+const Satisfacao = lazy(() => import('./telas/Satisfacao'));
+const Assistente = lazy(() => import('./telas/Assistente'));
+const Sobre = lazy(() => import('./telas/Sobre'));
 
 const FILTROS: DefFiltro[] = [
   { id: 'group', label: 'Equipe', options: [['all', 'Todas'], ...GROUPS.map((g, i) => [String(i), g] as [string, string])] },

@@ -52,7 +52,7 @@ export default function Fila() {
       <div className="grade g-5-7">
         <Card titulo="Há quanto tempo estão abertos?" sub="Chamados abertos agora por idade e equipe responsável.">
           <Legenda itens={gs.map((j) => ({ label: GSHORT[j], cor: cor.serie[j] }))} />
-          <Grafico rotulo="Chamados abertos por idade e equipe" altura={270}>
+          <Grafico semDados={!gs.length} vazio="Nenhum chamado aberto agora para este filtro." rotulo="Chamados abertos por idade e equipe" altura={270}>
             <BarChart data={idade} margin={margem}>
               <CartesianGrid {...grade} />
               <XAxis dataKey="faixa" {...eixoX} interval={0} />

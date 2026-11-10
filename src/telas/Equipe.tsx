@@ -45,7 +45,7 @@ export default function Equipe() {
       <>
         <Card titulo="Rapidez × satisfação" sub="Cada bolha é um analista. Mais à esquerda, resolve mais rápido; mais acima, usuários mais satisfeitos. O tamanho é o volume.">
           <Legenda itens={[...gs.map((j) => ({ label: GSHORT[j], cor: cor.serie[j] })), { label: 'Meta CSAT 4,3', tipo: 'tracejado' as const }]} />
-          <Grafico rotulo="Tempo para resolver e satisfação por analista" altura={340}>
+          <Grafico semDados={!pts.length} vazio="Poucas respostas de pesquisa neste recorte." rotulo="Tempo para resolver e satisfação por analista" altura={340}>
             <ScatterChart margin={{ top: 12, right: 18, bottom: 22, left: 0 }}>
               <CartesianGrid strokeDasharray="0" />
               <XAxis type="number" dataKey="mttr" scale="log" domain={[0.5, 'auto']} ticks={[0.5, 1, 2, 5, 10, 20, 50].filter((t) => t <= Math.max(...pts.map((x) => x.mttr)) * 1.6)} tickFormatter={(v) => `${v} h`} {...eixoX}
