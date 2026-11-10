@@ -1,50 +1,48 @@
-# Painel de Service Desk com IA — Grupo Rotalume
+# Painel de Service Desk — Grupo Rotalume
 
-> Dashboard interativo de Service Desk de uma empresa **fictícia** (Grupo Rotalume), em HTML/CSS/JS puro, sem backend, com um **assistente de IA** que responde perguntas sobre os próprios dados do painel.
+> Dashboard interativo do Service Desk interno de TI de uma empresa **fictícia** (Grupo Rotalume), em React + TypeScript, sem backend. Acompanha prazos (SLA), fila, desempenho da equipe e satisfação dos usuários, e traz um assistente que responde perguntas comuns com os próprios dados do painel.
 
 ![Visão geral](docs/img/servicedesk_visao_geral.png)
 
 ## O que o painel responde
 
-- Estamos cumprindo o SLA de resposta e resolução?
-- O que está na fila e há quanto tempo está aberto?
-- Como cada analista/equipe está performando (reabertura, FCR)?
-- O que os usuários mais reclamam (temas dos comentários, CSAT)?
+- Os chamados estão sendo atendidos e resolvidos no prazo?
+- O que está na fila agora, há quanto tempo, e o que vence primeiro?
+- Em que horários os chamados chegam, para montar a escala da equipe?
+- Como cada analista está em rapidez, reabertura e satisfação?
+- Do que os usuários mais reclamam, e qual ação atacar primeiro?
 
-## O assistente de IA
-
-A aba **Assistente IA** usa a capacidade de *tool use* do Claude: em vez de um chatbot genérico, a IA chama 5 "ferramentas" que consultam diretamente os dados daquela tela — indicadores, quebra por dimensão, fila aberta, comentários e tendência. Cada resposta mostra quais consultas foram feitas, então é possível rastrear de onde veio cada número.
-
-![Assistente de IA](docs/img/servicedesk_assistente.png)
-
-- **Dentro de um ambiente Claude** (ex.: Claude Artifacts), a IA usa a conta de quem está vendo o painel — nenhum custo recai sobre quem publicou.
-- **Fora do Claude (Vercel, GitHub Pages etc.)**, o assistente roda em **modo demonstração**: respostas calculadas no próprio navegador, sem chamada de API e sem chave alguma no código.
+![Fila e prazos](docs/img/servicedesk_fila.png)
 
 ## Por que essas escolhas
 
-- **IA com function-calling sobre os dados do próprio painel**: em vez de alucinar números, cada resposta é rastreável a uma consulta real feita sobre o dataset em memória. É o mesmo padrão (tool use) usado em agentes de IA de produção.
-- **Degradação graciosa (modo demonstração)**: o painel detecta se a capacidade de IA está disponível e avisa claramente qual modo está ativo, em vez de quebrar silenciosamente fora do Claude.
-- **Métricas de ITSM**: SLA de resposta/resolução, FCR (resolução no primeiro contato), taxa de reabertura e CSAT — vocabulário padrão de Service Desk (ITIL 4).
-- **Eventos simulados** (lançamento de portal de autoatendimento, migração de e-mail, instabilidade de VPN): testam se os indicadores refletem mudanças reais de processo, não só ruído aleatório.
-- **Arquivo único, sem build**: HTML/CSS/JS em um só arquivo (`index.html`), dados sintéticos gerados no navegador (semente fixa) e gráficos via Chart.js por CDN — publicável em qualquer hospedagem estática.
+- **Métricas de ITSM (ITIL 4)**: SLA de resposta e de resolução por prioridade, FCR (resolução no primeiro contato), reabertura e CSAT. É o vocabulário de qualquer central de serviço.
+- **Mediana em vez de média no tempo de resolução**: poucos chamados parados por semanas distorcem a média; a mediana mostra o tempo típico.
+- **Fila com "prazo consumido"**: em vez de só contar abertos, cada chamado mostra quanto do prazo já gastou, para agir antes de vencer.
+- **Comentários agrupados em temas com ação sugerida**: transforma a pesquisa de satisfação em um plano de melhoria, não só em uma nota.
+- **Assistente sem serviços externos**: as respostas são calculadas no navegador a partir dos mesmos dados dos gráficos. Não há chave de API no código e nenhum número é inventado.
+- **Eventos simulados** (migração de e-mail, portal de autoatendimento, queda da VPN): testam se os indicadores mostram mudanças reais de processo, não só ruído.
+- **React + TypeScript com dados gerados no navegador** (semente fixa, reprodutível), publicado como site estático. Cada tela abre com uma manchete que diz o resultado em uma frase, antes dos gráficos.
+
+![Satisfação do usuário](docs/img/servicedesk_satisfacao.png)
 
 ## Dados
 
-Todos os dados são fictícios, gerados no navegador ao carregar a página. Os eventos simulados estão detalhados na aba **"Sobre os dados"** do próprio painel.
+Todos os dados são fictícios, gerados no navegador ao carregar a página. Os eventos simulados e as fórmulas estão na aba **"Sobre os dados"** do próprio painel.
 
 ## Deploy
 
-Projeto 100% estático — basta apontar a hospedagem para a raiz do repositório.
+Aplicação estática feita com Vite. Na Vercel, basta importar o repositório: o framework é detectado sozinho (build `npm run build`, saída `dist/`). O `vercel.json` redireciona as rotas para o `index.html`, então links diretos como `/fila` funcionam.
 
-**Vercel:**
+**Localmente:**
 ```bash
-npm i -g vercel   # se ainda não tiver
-vercel --prod
+npm install
+npm run dev       # desenvolvimento
+npm run build     # gera dist/
 ```
-Ou: importar o repositório direto em [vercel.com/new](https://vercel.com/new) — nenhuma configuração de build é necessária (é um `index.html` puro).
 
-**Localmente:** abra `index.html` no navegador, ou sirva com qualquer servidor estático (`npx serve .`).
+A versão anterior, em HTML puro com Chart.js e assistente ligado ao Claude, está preservada em `legado.html`.
 
 ## Stack
 
-HTML5, CSS3 (custom properties para tema claro/escuro), JavaScript (ES6+), [Chart.js 4.4.1](https://www.chartjs.org/), Claude (tool use / function calling) para o assistente de IA.
+React 19 + TypeScript, Vite, React Router, [Recharts](https://recharts.org/) e ícones Lucide. O tema claro/escuro usa variáveis CSS e os gráficos leem as mesmas cores, então mudam junto com o tema. Os filtros ficam salvos no navegador. A identidade visual é compartilhada com os outros painéis da Rotalume.

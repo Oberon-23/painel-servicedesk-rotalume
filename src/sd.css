@@ -1,0 +1,38 @@
+/* Peças próprias do painel de Service Desk (comentários, temas e assistente). */
+.barra-in { display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.barra-in i { display: inline-block; height: 6px; border-radius: 3px; background: var(--accent); opacity: .55; }
+
+.temas { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.tema-c { border: 1px solid var(--line); border-left: 3px solid var(--bad); border-radius: 10px; padding: 12px 14px; display: grid; gap: 8px; background: var(--surface); }
+.tema-c.pos { border-left-color: var(--good); }
+.tema-c h4 { margin: 0; display: flex; justify-content: space-between; gap: 10px; align-items: center; font-size: 14px; }
+.tema-c q { color: var(--ink-2); font-style: italic; font-size: 13.5px; }
+.tema-c p { margin: 0; font-size: 13px; color: var(--muted); }
+.tema-c p b { color: var(--ink-2); }
+
+.busca { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line-2); border-radius: 9px; padding: 0 10px; margin-bottom: 12px; color: var(--muted); background: var(--surface); }
+.busca:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.busca input { flex: 1; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 14px; padding: 9px 0; outline: none; min-width: 0; }
+.comentarios { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; max-height: 560px; overflow-y: auto; padding-right: 4px; }
+.cmt { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: grid; gap: 6px; }
+.cmt .meta { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; font-size: 12px; color: var(--muted); }
+.cmt p { margin: 0; font-size: 14px; color: var(--ink); }
+
+.chat { display: grid; gap: 10px; max-height: 520px; overflow-y: auto; padding: 2px 2px 6px; }
+.msg { max-width: 88%; border-radius: 12px; padding: 10px 14px; font-size: 14px; line-height: 1.5; }
+.msg.u { justify-self: end; background: var(--accent); color: var(--accent-ink); border-bottom-right-radius: 4px; }
+.msg.a { justify-self: start; background: var(--surface-2, var(--bg)); border: 1px solid var(--line); border-bottom-left-radius: 4px; display: grid; gap: 6px; }
+.msg.a p, .msg.a h4, .msg.a ul { margin: 0; }
+.msg.a h4 { font-size: 14.5px; }
+.msg.a ul { padding-left: 18px; display: grid; gap: 3px; color: var(--ink-2); }
+.msg.a .rot { color: var(--muted); }
+.msg.a .passo { border-top: 1px solid var(--line); padding-top: 6px; }
+.msg .quem { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .04em; }
+.sugs { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.sug { border: 1px solid var(--line-2); background: var(--surface); color: var(--ink-2); border-radius: 999px; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+.sug:hover { border-color: var(--accent); color: var(--accent); }
+.pergunta { display: flex; gap: 8px; }
+.pergunta input { flex: 1; min-width: 0; border: 1px solid var(--line-2); border-radius: 9px; padding: 9px 12px; font: inherit; font-size: 14px; background: var(--surface); color: var(--ink); }
+.pergunta input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+@media (max-width: 640px) { .pergunta { flex-direction: column; } .msg { max-width: 100%; } }
+@media (max-width: 640px) { .calor .hc { font-size: 0; min-height: 22px; } .calor .hh { font-size: 9.5px; } }
