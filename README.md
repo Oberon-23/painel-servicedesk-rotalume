@@ -4,7 +4,15 @@
 
 > Dashboard interativo do Service Desk interno de TI de uma empresa **fictícia** (Grupo Rotalume), em React + TypeScript, sem backend. Acompanha prazos (SLA), fila, desempenho da equipe e satisfação dos usuários, e traz um assistente que responde perguntas comuns com os próprios dados do painel.
 
-![Visão geral](docs/img/servicedesk_visao_geral.png)
+**[Abrir o painel →](https://painel-servicedesk-rotalume.vercel.app)**
+
+## Em 30 segundos
+
+- **Problema:** a coordenação de um service desk precisa ver, no mesmo lugar, o prazo dos chamados, quem está esperando agora e se a escala acompanha a demanda.
+- **O que fiz:** um painel de SLA, fila, equipe e satisfação, com uma tela de operação ao vivo e um assistente que responde perguntas comuns usando os próprios dados do painel.
+- **O que ele mostra:** 78,7% dos chamados resolvidos no prazo, abaixo da meta de 90%, com Sistemas Corporativos como o maior problema (44,5% no prazo).
+
+![Demonstração: visão geral, operação ao vivo e fila de chamados](docs/img/demo.gif)
 
 ## O que o painel responde
 
