@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import './kit/tema.css';
+import './kit/refino.css';
 import './sd.css';
 import App from './App';
 
